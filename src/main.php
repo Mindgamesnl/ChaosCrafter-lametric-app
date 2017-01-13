@@ -1,5 +1,7 @@
 <?php
  
+$server_error = "none";
+
 class MCServerStatus {
  
     public $server;
@@ -31,13 +33,15 @@ class MCServerStatus {
                 $this->max_players = (int) $data[2];
             }
             else {
-                $this->error = "Cannot retrieve server info.";
+                //$this->error = "Cannot retrieve server info.";
+               $server_error = "Offline";
             }
  
         }
         else {
             $this->online = false;
-            $this->error = "Cannot connect to server.";
+           // $this->error = "Cannot connect to server.";
+         $server_error = "Offline";
         }
  
     }
@@ -47,11 +51,17 @@ class MCServerStatus {
 $server = new MCServerStatus("server.thefunpark.net", 25580);
 $player = $server->online_players;
 
+if ($server_error != "none") {
+   $output = $server_error;
+} else {
+   $output = $player . " ON";
+}
+
 ?>
 {
     "frames": [
         {
-            "text": "<?php echo $player; ?> ON",
+            "text": "<?php echo $output; ?>",
             "icon": "i5562"
         }
     ]
